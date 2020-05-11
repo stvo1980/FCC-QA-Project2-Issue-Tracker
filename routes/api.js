@@ -11,6 +11,7 @@
 var expect = require('chai').expect;
 var MongoClient = require('mongodb');
 var ObjectId = require('mongodb').ObjectID;
+var shortId = require("shortid")
 
 const CONNECTION_STRING = process.env.DB; //MongoClient.connect(CONNECTION_STRING, function(err, db) {});
 
@@ -35,6 +36,7 @@ module.exports = function (app,db) {
         updated_on: new Date(),
         created_by: req.body.created_by,
         assigned_to: req.body.assigned_to || '',
+     //    _id: shortId.generate,
         open: true,
         status_text: req.body.status_text || ''
       };
@@ -47,7 +49,7 @@ module.exports = function (app,db) {
          var db = db.db("test");
           var collection = db.collection(project);
           collection.insertOne(issue,function(err,doc){
-            issue._id = doc.insertedId;
+            issue._id = shortId.generate;
             res.json(issue);
             console.log("DB updated")
           });
