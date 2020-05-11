@@ -14,13 +14,20 @@ var ObjectId = require('mongodb').ObjectID;
 
 const CONNECTION_STRING = process.env.DB; //MongoClient.connect(CONNECTION_STRING, function(err, db) {});
 
-module.exports = function (app) {
+module.exports = function (app,db) {
 
   app.route('/api/issues/:project')
   
     .get(function (req, res){
       var project = req.params.project;
-      var issue = {
+     
+    
+    
+    })
+    
+    .post(function (req, res){
+      var project = req.params.project;
+       var issue = {
         issue_title: req.body.issue_title,
         issue_text: req.body.issue_text,
         created_on: new Date(),
@@ -34,26 +41,22 @@ module.exports = function (app) {
         res.send('missing inputs');
       } else {
         MongoClient.connect(CONNECTION_STRING, function(err, db) {
-      //   var db = db.db("test");
+          
+          
+         var db = db.db("test");
           var collection = db.collection(project);
           collection.insertOne(issue,function(err,doc){
-            if(err){console.log("Database error: " + err);}
-            else {
-    console.log("Successful database connection");}
-            
-            
             issue._id = doc.insertedId;
             res.json(issue);
+            console.log("DB updated")
           });
         });
       }
     
     
-    })
     
-    .post(function (req, res){
-      var project = req.params.project;
-      
+    
+    
     })
     
     .put(function (req, res){
