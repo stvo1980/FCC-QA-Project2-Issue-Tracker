@@ -51,7 +51,7 @@ app.use(function(req, res, next) {
 
 
 mongo.connect(process.env.DB, (err, db) => {
-  var db = db.db("test");
+//  var db = db.db("test");
   if (err) {
     console.log("Database error: " + err);
   } else {

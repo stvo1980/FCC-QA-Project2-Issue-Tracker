@@ -27,6 +27,7 @@ module.exports = function (app,db) {
     
     .post(function (req, res){
       var project = req.params.project;
+    console.log(project)
        var issue = {
         issue_title: req.body.issue_title,
         issue_text: req.body.issue_text,
