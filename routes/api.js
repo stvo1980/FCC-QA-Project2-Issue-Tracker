@@ -58,7 +58,7 @@ module.exports = function (app,db) {
         updated_on: issue.updated_on,
         created_by: issue.created_by,
         assigned_to: issue.assigned_to,
-        open: issue.open,
+        open: true,
         status_text: issue.status_text 
             });
 console.log("DB updated")
@@ -77,8 +77,10 @@ console.log("DB updated")
       var issue = req.body._id;
      delete req.body._id;
      var updates = req.body;
+    console.log(updates)
     
      for (var i in updates) { if (!updates[i]) { delete updates[i] } }
+    if (updates.open) { updates.open = String(updates.open) == "true" }
  //   console.log("updates",updates);
 //     console.log(updates);
     updates.updated_on = new Date();
