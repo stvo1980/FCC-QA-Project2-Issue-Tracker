@@ -29,6 +29,16 @@ suite('Functional Tests', function() {
         })
         .end(function(err, res){
           assert.equal(res.status, 200);
+         assert.equal(res.type, 'application/json', "Response should be json");
+         assert.equal(res.body.issue_title, 'Title', 'res.body.name should be "Marco"');
+        assert.equal(res.body.issue_text, 'text', 'res.body.surname should be "Polo"' );
+         assert.equal(res.body.created_by, 'Functional Test - Every field filled in', 'res.body.name should be "Marco"');
+        assert.equal(res.body.surname, 'Polo', 'res.body.surname should be "Polo"' );
+         assert.equal(res.body.name, 'Marco', 'res.body.name should be "Marco"');
+        
+         
+         
+         
           
           //fill me in too!
           
