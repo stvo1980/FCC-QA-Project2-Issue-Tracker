@@ -46,7 +46,7 @@ module.exports = function(app, db) {
           collection.insertOne(issue, function(err, doc) {
             //      issue._id = doc.insertedId;
             res.json({
-              //     _id: issue._id,
+                   _id: issue._id,
               issue_title: issue.issue_title,
               issue_text: issue.issue_text,
               created_on: issue.created_on,
@@ -110,16 +110,17 @@ module.exports = function(app, db) {
       MongoClient.connect(CONNECTION_STRING, function(err, db) {
        if(err){console.log("error connection delete",err)}
         var db = db.db("test");
-        var collection = db.collection("apitest");
+        var collection = db.collection(project);
 
-        collection.findAndRemove(
-          { _id: ObjectId(issue) },
+        collection.findOneAndDelete(
+          { _id: ObjectId(req.body._id)},
           //     [['_id',1]],
           //    {$set: updates},
           //    {new: true},
           function(err, doc) {
             !err
-              ? res.send("successfully deleted")
+              ? res.send("successfully deleted") &&
+            console.log("successfully deleted")
               : res.send("could not delete " + issue + " " + err);
           }
         );
