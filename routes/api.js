@@ -58,7 +58,7 @@ module.exports = function (app,db) {
         updated_on: issue.updated_on,
         created_by: issue.created_by,
         assigned_to: issue.assigned_to,
-        open: true,
+        open: issue.open,
         status_text: issue.status_text 
             });
 console.log("DB updated")
@@ -77,10 +77,8 @@ console.log("DB updated")
       var issue = req.body._id;
      delete req.body._id;
      var updates = req.body;
-    console.log(updates)
     
      for (var i in updates) { if (!updates[i]) { delete updates[i] } }
-    
  //   console.log("updates",updates);
 //     console.log(updates);
     updates.updated_on = new Date();
@@ -90,10 +88,10 @@ console.log("DB updated")
     var db = db.db("test");
           var collection = db.collection(project);
     
- collection.findOneAndUpdate({_id:new ObjectId(issue)},
-                      //    [['_id',1]],
+ collection.findAndModify({_id:new ObjectId(issue)},
+                          [['_id',1]],
                           {$set: updates},
-                    //      {new: true},
+                          {new: true},
                           function(err,doc){
             (!err) 
               ? res.send('successfully updated') 
