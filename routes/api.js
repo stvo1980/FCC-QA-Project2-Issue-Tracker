@@ -77,6 +77,8 @@ console.log("DB updated")
       var issue = req.body._id;
   // 
     var updates = req.body;
+    console.log(updates);
+     for (var ele in updates) { if (!updates[ele]) { delete updates[ele] } }
 //     console.log(updates);
     updates.updated_on = new Date();
   MongoClient.connect(CONNECTION_STRING, function(err, db) {
@@ -86,11 +88,13 @@ console.log("DB updated")
           var collection = db.collection(project);
     
     collection.findAndModify({_id:new ObjectId(issue)}, 
-                 //            {$set: updates},
+                             {$set: updates},
                              {issue_text:req.body.issue_text,
-                             
-                             
-                             
+                              issue_title: req.body.issue_title,
+                            updated_on: new Date(),
+        created_by: req.body.created_by,
+        assigned_to: req.body.assigned_to,
+        status_text: req.body.status_text
                              },
                              {new: true},function(err,doc){
       (!err) ? res.send('successfully updated') : res.send('could not update '+issue+' '+err);
