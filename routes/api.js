@@ -80,7 +80,7 @@ console.log("DB updated")
     console.log(updates)
     
      for (var i in updates) { if (!updates[i]) { delete updates[i] } }
-    if (updates.open) { updates.open = String(updates.open) == "true" }
+    
  //   console.log("updates",updates);
 //     console.log(updates);
     updates.updated_on = new Date();
