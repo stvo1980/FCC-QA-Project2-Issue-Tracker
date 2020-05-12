@@ -9,7 +9,7 @@
 "use strict";
 
 var expect = require("chai").expect;
-var MongoClient = require("mongodb");
+var MongoClient = require("mongodb",{ useUnifiedTopology: true });
 var ObjectId = require("mongodb").ObjectID;
 var shortId = require("shortid");
 
@@ -66,7 +66,7 @@ module.exports = function(app, db) {
       var project = req.params.project;
       var issue = req.body._id;
       delete req.body._id;
-//console.log(project);
+//console.log("project",project);
       var updates = req.body;
 
       for (var i in updates) {
@@ -102,28 +102,31 @@ module.exports = function(app, db) {
       }
     })
 
+  
+
+  
     .delete(function(req, res) {
       var project = req.params.project;
-    console.log("project",project);
+    console.log("project to delete",project);
       var issue = req.body._id;
     console.log("issue", issue)
-      MongoClient.connect(CONNECTION_STRING, function(err, db) {
-       if(err){console.log("error connection delete",err)}
-        else{console.log("DB touched")}
-        var db = db.db("test");
-        var collection = db.collection("apitest");
+   //   MongoClient.connect(CONNECTION_STRING, function(err, db) {
+  //     if(err){console.log("error connection delete",err)}
+   ///     else{console.log("DB touched")}
+   //     var db = db.db("test");
+  //      var collection = db.collection("apitest");
 
-        collection.findOneAndDelete(
-          { _id: ObjectId(issue) },
+   //     collection.findOneAndDelete(
+   //       { _id: ObjectId(issue) },
           //     [['_id',1]],
           //    {$set: updates},
           //    {new: true},
-          function(err, doc) {
-            !err
-              ? res.send("successfully deleted")
-              : res.send("could not delete " + issue + " " + err);
-          }
-        );
-      });
+ //         function(err, doc) {
+  //          !err
+  //            ? res.send("successfully deleted")
+   //           : res.send("could not delete " + issue + " " + err);
+ //         }
+  //      );
+//      });
     });
 };
