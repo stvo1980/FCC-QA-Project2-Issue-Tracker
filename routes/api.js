@@ -22,6 +22,9 @@ module.exports = function(app, db) {
 
     .get(function(req, res) {
       var project = req.params.project;
+    
+    
+    
     })
 
     .post(function(req, res) {
