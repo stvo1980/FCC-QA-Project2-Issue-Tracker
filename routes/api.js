@@ -109,10 +109,11 @@ module.exports = function(app, db) {
     console.log("issue", issue)
       MongoClient.connect(CONNECTION_STRING, function(err, db) {
        if(err){console.log("error connection delete",err)}
+        else{console.log("DB touched")}
         var db = db.db("test");
         var collection = db.collection("apitest");
 
-        collection.findAndRemove(
+        collection.findOneAndDelete(
           { _id: ObjectId(issue) },
           //     [['_id',1]],
           //    {$set: updates},
