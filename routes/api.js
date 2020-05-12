@@ -110,17 +110,16 @@ module.exports = function(app, db) {
       MongoClient.connect(CONNECTION_STRING, function(err, db) {
        if(err){console.log("error connection delete",err)}
         var db = db.db("test");
-        var collection = db.collection(project);
+        var collection = db.collection("apitest");
 
-        collection.findOneAndDelete(
-          { _id: ObjectId(req.body._id)},
+        collection.findAndRemove(
+          { _id: ObjectId(issue) },
           //     [['_id',1]],
           //    {$set: updates},
           //    {new: true},
           function(err, doc) {
             !err
-              ? res.send("successfully deleted") &&
-            console.log("successfully deleted")
+              ? res.send("successfully deleted")
               : res.send("could not delete " + issue + " " + err);
           }
         );
