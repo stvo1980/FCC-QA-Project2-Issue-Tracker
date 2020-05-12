@@ -66,7 +66,7 @@ module.exports = function(app, db) {
       var project = req.params.project;
       var issue = req.body._id;
       delete req.body._id;
-
+//console.log(project);
       var updates = req.body;
 
       for (var i in updates) {
@@ -74,11 +74,11 @@ module.exports = function(app, db) {
           delete updates[i];
         }
       }
-      console.log("updates", updates);
+ //     console.log("updates", updates);
       //     console.log(updates);
       updates.updated_on = new Date();
 
-      console.log("length", Object.keys(updates).length);
+  //    console.log("length", Object.keys(updates).length);
 
       if (Object.keys(updates).length < 2) {
         res.send("no updated field sent");
@@ -106,13 +106,14 @@ module.exports = function(app, db) {
       var project = req.params.project;
     console.log("project",project);
       var issue = req.body._id;
+    console.log("issue", issue)
       MongoClient.connect(CONNECTION_STRING, function(err, db) {
        if(err){console.log("error connection delete",err)}
         var db = db.db("test");
         var collection = db.collection("apitest");
 
         collection.findAndRemove(
-          { _id: new ObjectId(issue) },
+          { _id: ObjectId(issue) },
           //     [['_id',1]],
           //    {$set: updates},
           //    {new: true},
