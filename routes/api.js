@@ -49,22 +49,19 @@ module.exports = function (app,db) {
          var db = db.db("test");
           var collection = db.collection(project);
           collection.insertOne(issue,function(err,doc){
-            issue._id = doc.insertedId;
-            // issue._id = shortId.generate;
-             
-            res.json({
-              _id: issue._id,
-              issue_title: issue.issue_title,
+      //      issue._id = doc.insertedId;
+        res.json({
+        _id: issue._id,
+        issue_title: issue.issue_title,
         issue_text: issue.issue_text,
         created_on: issue.created_on,
         updated_on: issue.updated_on,
         created_by: issue.created_by,
         assigned_to: issue.assigned_to,
-           open: issue.open,
+        open: issue.open,
         status_text: issue.status_text 
             });
-   //       res.send({_id: issue._id} );
-            console.log("DB updated")
+console.log("DB updated")
           });
         });
       }
