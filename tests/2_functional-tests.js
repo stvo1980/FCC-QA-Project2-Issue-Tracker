@@ -14,6 +14,8 @@ var server = require("../server");
 chai.use(chaiHttp);
 
 suite("Functional Tests", function() {
+  
+  var idTest;
   suite("POST /api/issues/{project} => object with issue data", function() {
     test("Every field filled in", function(done) {
       chai
@@ -62,6 +64,7 @@ suite("Functional Tests", function() {
             "Functional Test - Every field filled in",
             ""
           );
+          idTest = res.body._id;
 
           done();
         });
@@ -90,14 +93,10 @@ suite("Functional Tests", function() {
       chai
         .request(server)
         .post("/api/issues/test")
-        .send({
-          issue_id: "",
-         
-        })
+         .send({_id: null})
         .end(function(err, res) {
           assert.equal(res.status, 200);
           assert.equal(res.text, "no updated field sent");
-
           done();
         });
       
