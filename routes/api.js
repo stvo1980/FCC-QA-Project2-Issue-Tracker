@@ -9,7 +9,7 @@
 "use strict";
 
 var expect = require("chai").expect;
-var MongoClient = require("mongodb",{ useUnifiedTopology: true });
+var MongoClient = require("mongodb");
 var ObjectId = require("mongodb").ObjectID;
 var shortId = require("shortid");
 
@@ -101,32 +101,26 @@ module.exports = function(app, db) {
         });
       }
     })
-
-  
-
-  
-    .delete(function(req, res) {
+.delete(function (req, res){
       var project = req.params.project;
-    console.log("project to delete",project);
+    console.log("deletenow",project)
       var issue = req.body._id;
-    console.log("issue", issue)
-   //   MongoClient.connect(CONNECTION_STRING, function(err, db) {
-  //     if(err){console.log("error connection delete",err)}
-   ///     else{console.log("DB touched")}
-   //     var db = db.db("test");
-  //      var collection = db.collection("apitest");
-
-   //     collection.findOneAndDelete(
-   //       { _id: ObjectId(issue) },
-          //     [['_id',1]],
-          //    {$set: updates},
-          //    {new: true},
- //         function(err, doc) {
-  //          !err
-  //            ? res.send("successfully deleted")
-   //           : res.send("could not delete " + issue + " " + err);
- //         }
-  //      );
-//      });
+      if (!issue) {
+        res.send('_id error');
+      } else {
+        MongoClient.connect(CONNECTION_STRING, function(err, db) {
+         var db = db.db("test");
+          var collection = db.collection(project);
+          collection.findOneAndDelete({_id:new ObjectId(issue)},function(err,doc){
+            (!err) ? res.send('deleted '+issue) : res.send('could not delete '+issue+' '+err);
+          });
+        });
+      }
     });
+    
 };
+
+  
+
+  
+    
