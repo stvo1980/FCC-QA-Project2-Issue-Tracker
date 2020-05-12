@@ -74,7 +74,9 @@ console.log("DB updated")
     
     .put(function (req, res){
       var project = req.params.project;
-      
+      var issue = req.body._id;
+    issue.findOneAndUpdate
+    
     })
     
     .delete(function (req, res){
