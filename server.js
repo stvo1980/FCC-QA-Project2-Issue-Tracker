@@ -11,7 +11,7 @@ var runner            = require('./test-runner');
 
 
 const methodOverride = require('method-override');
-app.use(methodOverride('_method'));
+
 
 
 var app = express();
@@ -21,6 +21,8 @@ app.use('/public', express.static(process.cwd() + '/public'));
 app.use(cors({origin: '*'})); //For FCC testing purposes only
 
 app.use(cors());
+
+app.use(methodOverride('_method'));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
