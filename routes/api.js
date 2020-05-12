@@ -75,14 +75,16 @@ console.log("DB updated")
     .put(function (req, res){
       var project = req.params.project;
       var issue = req.body._id;
+  // 
     var updates = req.body;
+     console.log(updates);
   MongoClient.connect(CONNECTION_STRING, function(err, db) {
     
     
     var db = db.db("test");
           var collection = db.collection(project);
     
-    collection.findOneAndUpdate({_id:req.body._id}, {$set: updates},function(err,doc){
+    collection.findAndModify({_id:new ObjectId(issue)},[['_id',1]], {$set: updates},{new: true},function(err,doc){
       (!err) ? res.send('successfully updated') : res.send('could not update '+issue+' '+err);
     })
  
