@@ -108,38 +108,25 @@ module.exports = function(app, db) {
     
     
     
-//    var issue = req.body._id;
- //     if (!issue) {
- //       res.send('_id error');
-  //    } else {
-  //      MongoClient.connect(CONNECTION_STRING, function(err, db) {
-  //       var db = db.db("test");
-   //       var collection = db.collection(project);
-   //       collection.findOneAndDelete({_id:new ObjectId(issue)},function(err,doc){
-   //         (!err) ? res.send('deleted '+issue) : res.send('could not delete '+issue+' '+err);
-   //       });
-   //     });
-  //    }
+    var issue = req.body._id;
+      if (!issue) {
+        res.send('_id error');
+      } else {
+        MongoClient.connect(CONNECTION_STRING, function(err, db) {
+         var db = db.db("test");
+          var collection = db.collection(project);
+          collection.findOneAndDelete({_id:new ObjectId(issue)},function(err,doc){
+            (!err) ? res.send('deleted '+issue) : res.send('could not delete '+issue+' '+err);
+          });
+        });
+      }
     
   
-    const issueID = req.body._id;
-
-    if ( issueID ) {
-      MongoClient.connect( CONNECTION_STRING )
-        .then( db => {
-          const collection = db.collection( project );
-          collection.findOneAndDelete( { _id: new ObjectId( issueID ) } )
-            .then( doc => res.send( `deleted ${issueID}` ) )
-            .catch( error => res.send ( `could not delete ${issueID}` ) )
-        } )
-    } else {
-      res.send( '_id error' );
-    }
-  } );
+   
     
     
     
-  //  });
+    });
     
 };
 
