@@ -76,13 +76,20 @@ console.log("DB updated")
       var project = req.params.project;
       var issue = req.body._id;
      delete req.body._id;
-  // 
+  
     var updates = req.body;
     
      for (var i in updates) { if (!updates[i]) { delete updates[i] } }
     console.log("updates",updates);
 //     console.log(updates);
     updates.updated_on = new Date();
+ 
+   console.log("length", Object.keys(updates).length); 
+    
+    if (Object.keys(updates).length < 2) 
+    {
+        res.send('no updated field sent');
+      } else {
   MongoClient.connect(CONNECTION_STRING, function(err, db) {
     
     
@@ -95,16 +102,31 @@ console.log("DB updated")
                       //    {new: true},
                           function(err,doc){
             (!err) ? res.send('successfully updated') : res.send('could not update '+issue+' '+err);
-            //console.log(doc.value);
+   
           });
  
   
   })
+  }
     })
     
     .delete(function (req, res){
       var project = req.params.project;
-      
+       var issue = req.body._id;
+      if (!issue) {
+        res.send('_id error');
+      } else {
+        MongoClient.connect(CONNECTION_STRING, function(err, db) {
+          var db = db.db("test");
+          var collection = db.collection(project);
+          collection.findAndRemove({_id:new ObjectId(issue)},function(err,doc){
+            (!err) ? res.send('deleted '+issue) : res.send('could not delete '+issue+' '+err);
+          });
+        });
+      }
+    
+    
+    
     });
     
 };
