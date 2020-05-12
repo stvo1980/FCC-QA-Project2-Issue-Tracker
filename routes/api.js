@@ -76,11 +76,10 @@ console.log("DB updated")
       var project = req.params.project;
       var issue = req.body._id;
      delete req.body._id;
-  // 
-    var updates = req.body;
+     var updates = req.body;
     
-     for (var ele in updates) { if (!updates[ele]) { delete updates[ele] } }
-    console.log("updates",updates);
+     for (var i in updates) { if (!updates[i]) { delete updates[i] } }
+ //   console.log("updates",updates);
 //     console.log(updates);
     updates.updated_on = new Date();
   MongoClient.connect(CONNECTION_STRING, function(err, db) {
@@ -89,8 +88,14 @@ console.log("DB updated")
     var db = db.db("test");
           var collection = db.collection(project);
     
- collection.findAndModify({_id:new ObjectId(issue)},[['_id',1]],{$set: updates},{new: true},function(err,doc){
-            (!err) ? res.send('successfully updated') : res.send('could not update '+issue+' '+err);
+ collection.findOneAndUpdate({_id:new ObjectId(issue)},
+                      //    [['_id',1]],
+                          {$set: updates},
+                    //      {new: true},
+                          function(err,doc){
+            (!err) 
+              ? res.send('successfully updated') 
+              : res.send('could not update '+issue+' '+err);
             //console.log(doc.value);
           });
  
