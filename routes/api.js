@@ -103,7 +103,7 @@ module.exports = function(app, db) {
     })
 .delete(function (req, res){
       var project = req.params.project;
-    console.log("deletenow",project)
+    console.log("deletenew",project)
       var issue = req.body._id;
       if (!issue) {
         res.send('_id error');
