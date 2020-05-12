@@ -19,6 +19,8 @@ app.use(cors());
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+const methodOverride = require('method-override');
+app.use(methodOverride('_method'));
 
 //Sample front-end
 app.route('/:project/')

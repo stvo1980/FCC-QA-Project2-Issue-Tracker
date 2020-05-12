@@ -13,6 +13,7 @@ var MongoClient = require("mongodb");
 var ObjectId = require("mongodb").ObjectID;
 var shortId = require("shortid");
 
+
 const CONNECTION_STRING = process.env.DB; //MongoClient.connect(CONNECTION_STRING, function(err, db) {});
 
 module.exports = function(app, db) {
