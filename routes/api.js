@@ -51,7 +51,7 @@ module.exports = function (app,db) {
           collection.insertOne(issue,function(err,doc){
       //      issue._id = doc.insertedId;
         res.json({
-        _id: issue._id,
+   //     _id: issue._id,
         issue_title: issue.issue_title,
         issue_text: issue.issue_text,
         created_on: issue.created_on,
