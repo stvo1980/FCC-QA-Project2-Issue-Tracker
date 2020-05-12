@@ -86,8 +86,27 @@ suite("Functional Tests", function() {
   });
 
   suite("PUT /api/issues/{project} => text", function() {
-    test("No body", function(done) {});
+    test("No body", function(done) {
+      chai
+        .request(server)
+        .post("/api/issues/test")
+        .send({
+          issue_id: "",
+         
+        })
+        .end(function(err, res) {
+          assert.equal(res.status, 200);
+          assert.equal(res.text, "no updated field sent");
 
+          done();
+        });
+      
+      
+    });
+
+    
+    
+    
     test("One field to update", function(done) {});
 
     test("Multiple fields to update", function(done) {});
