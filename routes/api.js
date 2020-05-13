@@ -11,7 +11,6 @@
 var expect = require("chai").expect;
 var MongoClient = require("mongodb");
 var ObjectId = require("mongodb").ObjectID;
-var shortId = require("shortid");
 
 
 const CONNECTION_STRING = process.env.DB; //MongoClient.connect(CONNECTION_STRING, function(err, db) {});
@@ -22,21 +21,25 @@ module.exports = function(app, db) {
 
     .get(function(req, res) {
       var project = req.params.project;
-     var searchQuery = req.query;
-      if (searchQuery._id) { searchQuery._id = new ObjectId(searchQuery._id)}
-      if (searchQuery.open) { searchQuery.open = String(searchQuery.open) == "true" }
+      var searchQuery = req.query;
+      if (searchQuery._id) {
+        searchQuery._id = new ObjectId(searchQuery._id);
+      }
+      if (searchQuery.open) {
+        searchQuery.open = String(searchQuery.open) == "true";
+      }
       MongoClient.connect(CONNECTION_STRING, function(err, db) {
-         var db = db.db("test");
+        var db = db.db("test");
         var collection = db.collection(project);
-        collection.find(searchQuery).toArray(function(err,docs){res.json(docs)});
+        collection.find(searchQuery).toArray(function(err, docs) {
+          res.json(docs);
+        });
       });
-    
-    
     })
 
     .post(function(req, res) {
       var project = req.params.project;
- //     console.log(project);
+   
       var issue = {
         issue_title: req.body.issue_title,
         issue_text: req.body.issue_text,
@@ -44,7 +47,7 @@ module.exports = function(app, db) {
         updated_on: new Date(),
         created_by: req.body.created_by,
         assigned_to: req.body.assigned_to || "",
-        //    _id: shortId.generate,
+       
         open: true,
         status_text: req.body.status_text || ""
       };
@@ -57,7 +60,7 @@ module.exports = function(app, db) {
           collection.insertOne(issue, function(err, doc) {
             //      issue._id = doc.insertedId;
             res.json({
-                   _id: issue._id,
+              _id: issue._id,
               issue_title: issue.issue_title,
               issue_text: issue.issue_text,
               created_on: issue.created_on,
@@ -77,7 +80,7 @@ module.exports = function(app, db) {
       var project = req.params.project;
       var issue = req.body._id;
       delete req.body._id;
-//console.log("project",project);
+      //console.log("project",project);
       var updates = req.body;
 
       for (var i in updates) {
@@ -85,11 +88,11 @@ module.exports = function(app, db) {
           delete updates[i];
         }
       }
- //     console.log("updates", updates);
-      //     console.log(updates);
+      //     console.log("updates", updates);
+    
       updates.updated_on = new Date();
 
-  //    console.log("length", Object.keys(updates).length);
+      //    console.log("length", Object.keys(updates).length);
 
       if (Object.keys(updates).length < 2) {
         res.send("no updated field sent");
@@ -100,10 +103,8 @@ module.exports = function(app, db) {
 
           collection.findOneAndUpdate(
             { _id: new ObjectId(issue) },
-            //     [['_id',1]],
-            { $set: updates },
-            //    {new: true},
-            function(err, doc) {
+                    { $set: updates },
+                      function(err, doc) {
               !err
                 ? res.send("successfully updated")
                 : res.send("could not update " + issue + " " + err);
@@ -112,35 +113,26 @@ module.exports = function(app, db) {
         });
       }
     })
-.delete(function (req, res){
+    .delete(function(req, res) {
       var project = req.params.project;
-    console.log("deletenew",project)
-    
-    
-    
-    var issue = req.body._id;
+      console.log("deletenew", project);
+
+      var issue = req.body._id;
       if (!issue) {
-        res.send('_id error');
+        res.send("_id error");
       } else {
         MongoClient.connect(CONNECTION_STRING, function(err, db) {
-         var db = db.db("test");
+          var db = db.db("test");
           var collection = db.collection(project);
-          collection.findOneAndDelete({_id:new ObjectId(issue)},function(err,doc){
-            (!err) ? res.send('deleted '+issue) : res.send('could not delete '+issue+' '+err);
+          collection.findOneAndDelete({ _id: new ObjectId(issue) }, function(
+            err,
+            doc
+          ) {
+            !err
+              ? res.send("deleted " + issue)
+              : res.send("could not delete " + issue + " " + err);
           });
         });
       }
-    
-  
-   
-    
-    
-    
     });
-    
 };
-
-  
-
-  
-    

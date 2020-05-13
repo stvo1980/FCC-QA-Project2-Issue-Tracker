@@ -108,40 +108,44 @@ suite("Functional Tests", function() {
 
   suite("PUT /api/issues/{project} => text", function() {
     test("No body", function(done) {
-      chai.request(server)
-        .put('/api/issues/test')
-        .send({_id: idTest})
-        .end(function(err, res){
+      chai
+        .request(server)
+        .put("/api/issues/test")
+        .send({ _id: idTest })
+        .end(function(err, res) {
           assert.equal(res.status, 200);
-          assert.equal(res.text, 'no updated field sent');
-//        assert.equal(res.text, 'no updated field sent');
+          assert.equal(res.text, "no updated field sent");
+
           done();
         });
     });
 
     test("One field to update", function(done) {
-      chai.request(server)
-        .put('/api/issues/test')
-        .send({_id: idTest, issue_title: "New Title"})
-        .end(function(err, res){
+      chai
+        .request(server)
+        .put("/api/issues/test")
+        .send({ _id: idTest, issue_title: "New Title" })
+        .end(function(err, res) {
           assert.equal(res.status, 200);
-          assert.equal(res.text, 'successfully updated');
+          assert.equal(res.text, "successfully updated");
           done();
         });
-      
-      
     });
 
     test("Multiple fields to update", function(done) {
-      chai.request(server)
-        .put('/api/issues/test')
-        .send({_id: idTest, issue_title: "New Title", issue_text:"test text"})
-        .end(function(err, res){
+      chai
+        .request(server)
+        .put("/api/issues/test")
+        .send({
+          _id: idTest,
+          issue_title: "New Title",
+          issue_text: "test text"
+        })
+        .end(function(err, res) {
           assert.equal(res.status, 200);
-          assert.equal(res.text, 'successfully updated');
+          assert.equal(res.text, "successfully updated");
           done();
-      })
-      
+        });
     });
   });
 
@@ -173,7 +177,7 @@ suite("Functional Tests", function() {
         chai
           .request(server)
           .get("/api/issues/test")
-          .query({issue_title:"New Title"})
+          .query({ issue_title: "New Title" })
           .end(function(err, res) {
             assert.equal(res.status, 200);
             assert.isArray(res.body);
@@ -186,18 +190,16 @@ suite("Functional Tests", function() {
             assert.property(res.body[0], "open");
             assert.property(res.body[0], "status_text");
             assert.property(res.body[0], "_id");
-          assert.equal(res.body[0].issue_title, "New Title")
+            assert.equal(res.body[0].issue_title, "New Title");
             done();
           });
-        
-        
       });
 
       test("Multiple filters (test for multiple fields you know will be in the db for a return)", function(done) {
         chai
           .request(server)
           .get("/api/issues/test")
-          .query({issue_title:"New Title", issue_text:"test text"})
+          .query({ issue_title: "New Title", issue_text: "test text" })
           .end(function(err, res) {
             assert.equal(res.status, 200);
             assert.isArray(res.body);
@@ -210,29 +212,40 @@ suite("Functional Tests", function() {
             assert.property(res.body[0], "open");
             assert.property(res.body[0], "status_text");
             assert.property(res.body[0], "_id");
-          assert.equal(res.body[0].issue_title, "New Title")
-           assert.equal(res.body[0].issue_text, "test text")
-  //        assert.equal(res.body[0].status_text, "In QA")
+            assert.equal(res.body[0].issue_title, "New Title");
+            assert.equal(res.body[0].issue_text, "test text");
+            //        assert.equal(res.body[0].status_text, "In QA")
             done();
-        
+          });
       });
-    })
-    });
+    }
+  );
 
   suite("DELETE /api/issues/{project} => text", function() {
     test("No _id", function(done) {
-      chai.request(server)
-        .delete('/api/issues/test')
+      chai
+        .request(server)
+        .delete("/api/issues/test")
         .send({})
-        .end(function(err, res){
+        .end(function(err, res) {
           assert.equal(res.status, 200);
-          assert.equal(res.text, 'no updated field sent');
-//        assert.equal(res.text, 'no updated field sent');
+          assert.equal(res.text, "_id error");
+
           done();
         });
-      
     });
 
-    test("Valid _id", function(done) {});
+    test("Valid _id", function(done) {
+      chai
+        .request(server)
+        .delete("/api/issues/test")
+        .send({ _id: idTest })
+        .end(function(err, res) {
+          assert.equal(res.status, 200);
+          assert.equal(res.text, "deleted " + idTest);
+
+          done();
+        });
+    });
   });
 });
