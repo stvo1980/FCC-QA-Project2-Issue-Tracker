@@ -186,6 +186,7 @@ suite("Functional Tests", function() {
             assert.property(res.body[0], "open");
             assert.property(res.body[0], "status_text");
             assert.property(res.body[0], "_id");
+          assert.equal(res.body[0].issue_text, "test")
             done();
           });
         

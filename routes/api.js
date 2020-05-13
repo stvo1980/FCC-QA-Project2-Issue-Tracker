@@ -23,8 +23,8 @@ module.exports = function(app, db) {
     .get(function(req, res) {
       var project = req.params.project;
      var searchQuery = req.query;
-   //   if (searchQuery._id) { searchQuery._id = new ObjectId(searchQuery._id)}
-   //   if (searchQuery.open) { searchQuery.open = String(searchQuery.open) == "true" }
+      if (searchQuery._id) { searchQuery._id = new ObjectId(searchQuery._id)}
+      if (searchQuery.open) { searchQuery.open = String(searchQuery.open) == "true" }
       MongoClient.connect(CONNECTION_STRING, function(err, db) {
          var db = db.db("test");
         var collection = db.collection(project);
