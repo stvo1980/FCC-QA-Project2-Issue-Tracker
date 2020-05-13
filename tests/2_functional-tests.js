@@ -122,7 +122,7 @@ suite("Functional Tests", function() {
     test("One field to update", function(done) {
       chai.request(server)
         .put('/api/issues/test')
-        .send({_id: idTest}, {issue_title: "New Title"})
+        .send({_id: idTest, issue_title: "New Title"})
         .end(function(err, res){
           assert.equal(res.status, 200);
           assert.equal(res.text, 'successfully updated');
@@ -132,7 +132,17 @@ suite("Functional Tests", function() {
       
     });
 
-    test("Multiple fields to update", function(done) {});
+    test("Multiple fields to update", function(done) {
+      chai.request(server)
+        .put('/api/issues/test')
+        .send({_id: idTest, issue_title: "New Title", issue_text:"test text"})
+        .end(function(err, res){
+          assert.equal(res.status, 200);
+          assert.equal(res.text, 'successfully updated');
+          done();
+      })
+      
+    });
   });
 
   suite(
@@ -159,7 +169,28 @@ suite("Functional Tests", function() {
           });
       });
 
-      test("One filter", function(done) {});
+      test("One filter", function(done) {
+        chai
+          .request(server)
+          .get("/api/issues/test")
+          .query({issue_text:"test"})
+          .end(function(err, res) {
+            assert.equal(res.status, 200);
+            assert.isArray(res.body);
+            assert.property(res.body[0], "issue_title");
+            assert.property(res.body[0], "issue_text");
+            assert.property(res.body[0], "created_on");
+            assert.property(res.body[0], "updated_on");
+            assert.property(res.body[0], "created_by");
+            assert.property(res.body[0], "assigned_to");
+            assert.property(res.body[0], "open");
+            assert.property(res.body[0], "status_text");
+            assert.property(res.body[0], "_id");
+            done();
+          });
+        
+        
+      });
 
       test("Multiple filters (test for multiple fields you know will be in the db for a return)", function(done) {});
     }
