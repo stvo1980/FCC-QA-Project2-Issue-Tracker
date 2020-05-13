@@ -114,7 +114,7 @@ suite("Functional Tests", function() {
         .end(function(err, res){
           assert.equal(res.status, 200);
           assert.equal(res.text, 'no updated field sent');
-        assert.equal(res.text, 'no updated field sent');
+//        assert.equal(res.text, 'no updated field sent');
           done();
         });
     });
@@ -173,7 +173,7 @@ suite("Functional Tests", function() {
         chai
           .request(server)
           .get("/api/issues/test")
-          .query({issue_text:"test"})
+          .query({issue_title:"New Title"})
           .end(function(err, res) {
             assert.equal(res.status, 200);
             assert.isArray(res.body);
@@ -186,19 +186,52 @@ suite("Functional Tests", function() {
             assert.property(res.body[0], "open");
             assert.property(res.body[0], "status_text");
             assert.property(res.body[0], "_id");
-          assert.equal(res.body[0].issue_text, "test")
+          assert.equal(res.body[0].issue_title, "New Title")
             done();
           });
         
         
       });
 
-      test("Multiple filters (test for multiple fields you know will be in the db for a return)", function(done) {});
-    }
-  );
+      test("Multiple filters (test for multiple fields you know will be in the db for a return)", function(done) {
+        chai
+          .request(server)
+          .get("/api/issues/test")
+          .query({issue_title:"New Title", issue_text:"test text"})
+          .end(function(err, res) {
+            assert.equal(res.status, 200);
+            assert.isArray(res.body);
+            assert.property(res.body[0], "issue_title");
+            assert.property(res.body[0], "issue_text");
+            assert.property(res.body[0], "created_on");
+            assert.property(res.body[0], "updated_on");
+            assert.property(res.body[0], "created_by");
+            assert.property(res.body[0], "assigned_to");
+            assert.property(res.body[0], "open");
+            assert.property(res.body[0], "status_text");
+            assert.property(res.body[0], "_id");
+          assert.equal(res.body[0].issue_title, "New Title")
+           assert.equal(res.body[0].issue_text, "test text")
+  //        assert.equal(res.body[0].status_text, "In QA")
+            done();
+        
+      });
+    })
+    });
 
   suite("DELETE /api/issues/{project} => text", function() {
-    test("No _id", function(done) {});
+    test("No _id", function(done) {
+      chai.request(server)
+        .delete('/api/issues/test')
+        .send({})
+        .end(function(err, res){
+          assert.equal(res.status, 200);
+          assert.equal(res.text, 'no updated field sent');
+//        assert.equal(res.text, 'no updated field sent');
+          done();
+        });
+      
+    });
 
     test("Valid _id", function(done) {});
   });
